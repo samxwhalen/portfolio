@@ -62,6 +62,7 @@ public class HauntedHouseApplication {
     private void hauntedHouseOutcome(String choice, List<Resident> residents, List<Person> help, List<ContactDeadApproach> contactMethods){
 
         boolean restInPeace = false;
+        boolean getHelp = false;
         int spiritPeace = 0;
         String prompt = "";
 
@@ -104,15 +105,13 @@ public class HauntedHouseApplication {
 
                 spiritPeace = spirits.get(0).getPeacefulnessLevel() + spirits.get(1).getPeacefulnessLevel() - 4 ;
 
-                Psychic psychic = null;
-
+                Psychic psychic = new Psychic(0);
 
                 System.out.println(ghost1.haunt());
 
                 System.out.println("Weird stuff has been happening in the house. \n");
 
                 for (Resident resident : residents) {
-
 
                     System.out.println( resident.scareReaction());
 
@@ -122,46 +121,52 @@ public class HauntedHouseApplication {
                     System.out.println(ghost2.followFamiliarRoutine());
                 }
 
-                System.out.println("It's decided that it is time to consult someone who could help.\n");
-                int potentialHelp = help.size();
+                //this needs to be wrapped in a loop or tucked away in a method so that it doesn't keep triggering
+                while (getHelp == false){
+                    System.out.println("It's decided that it is time to consult someone who could help.\n");
+                    int potentialHelp = help.size();
 
-                prompt = "Pick a number between 1 - " + potentialHelp;
-                Integer selection = Integer.parseInt(getUserInput(prompt));
-                if (selection <= 0 && selection > potentialHelp){
-                    prompt = "Try Again.";
-                    selection = Integer.parseInt(getUserInput(prompt));
-                }
-
-                if(selection == 1){
-                    psychic = (Psychic) help.get(0);
-                } else if (selection == 2) {
-                    psychic = (Psychic) help.get(1);
-                }
-                else if (selection == 3) {
-                    psychic = (Psychic) help.get(2);
-                }
-
-                System.out.printf("\nYou phone %s, a %s. \n", psychic.getName(), psychic.getHelpType());
-                psychic.setClients(residents);
-
-                //have psychic consult clients
-                psychic.consultClients(residents);
-
-                // contact dead method
-                System.out.println("\nThe advice is severe. If there is going to be any peace in this house, drastic measures must be taken. \n");
-                System.out.printf("%s advises that everyone try to contact the spirit by means of: \n", psychic.getName());
-                for (ContactDeadApproach approach : approaches){
-                    System.out.print(approach.getApproachMethod() + "\n");   // this may be weird
-                }
-
-                for (Resident resident : currentResidents) {
-                    if (resident.getSkepticismLevel() <= 4){
-                        System.out.printf("%s is totally on board. Whatever %s says, they will do! \n", resident.getName(), psychic.getName());
-                    } if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
-                        System.out.printf("%s is hesitant but doesn't see the harm in trying a different approach. They think %s seems a little full of it but they want to keep an open mind \n", resident.getName(), psychic.getName());
-                    } if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
-                        System.out.printf("%s is totally opposed to the idea. They want to know why they should believe a word %s says! It smells like a scam to them \n", resident.getName(), psychic.getName());
+                    prompt = "Pick a number between 1 - " + potentialHelp;
+                    Integer selection = Integer.parseInt(getUserInput(prompt));
+                    if (selection <= 0 && selection > potentialHelp){
+                        prompt = "Try Again.";
+                        selection = Integer.parseInt(getUserInput(prompt));
                     }
+
+                    if(selection == 1){
+                        psychic = (Psychic) help.get(0);
+                    } else if (selection == 2) {
+                        psychic = (Psychic) help.get(1);
+                    }
+                    else if (selection == 3) {
+                        psychic = (Psychic) help.get(2);
+                    }
+
+                    System.out.printf("\nYou phone %s, a %s. \n", psychic.getName(), psychic.getHelpType());
+                    psychic.setClients(residents);
+
+                    //have psychic consult clients
+                    psychic.consultClients(residents);
+
+                    // contact dead method
+                    System.out.println("\nThe advice is severe. If there is going to be any peace in this house, drastic measures must be taken. \n");
+                    System.out.printf("%s advises that everyone try to contact the spirit by means of: \n", psychic.getName());
+                    for (ContactDeadApproach approach : approaches){
+                        System.out.print(approach.getApproachMethod() + "\n");   // this may be weird
+                    }
+
+                    for (Resident resident : currentResidents) {
+                        if (resident.getSkepticismLevel() <= 4){
+                            System.out.printf("%s is totally on board. Whatever %s says, they will do! \n", resident.getName(), psychic.getName());
+                        } if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
+                            System.out.printf("%s is hesitant but doesn't see the harm in trying a different approach. They think %s seems a little full of it but they want to keep an open mind \n", resident.getName(), psychic.getName());
+                        } if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
+                            System.out.printf("%s is totally opposed to the idea. They want to know why they should believe a word %s says! It smells like a scam to them \n", resident.getName(), psychic.getName());
+                        }
+                    }
+
+                    //this breaks the loop / stops it from being repeated each time they interact with spirits
+                    getHelp = true;
                 }
 
                 int strengthOfContact = 0;
@@ -173,18 +178,18 @@ public class HauntedHouseApplication {
                     strengthOfContact = psychic.getPsychicStrength();
                 }
 
+                System.out.println("Let the contacting begin! \n ");
                 for (ContactDeadApproach approach : approaches){
-                    System.out.println("Let the contacting begin! \n ");
+
                     prompt = "What should their message to the spirit be? \n";
                     String message = getUserInput(prompt);
 
                     approach.contactDead(strengthOfContact, message, ghost1, allParticipants, approach.getApproachMethod());
                     spiritPeace = ghost1.getPeacefulnessLevel();
 
-                }
-
-                if (spiritPeace == 10){
-                    restInPeace = true;
+                    if (spiritPeace == 10){
+                        restInPeace = true;
+                    }
                 }
 
                 // copy and paste logic from above an tweak for these options - consider best way to layer spirits
@@ -301,16 +306,19 @@ public class HauntedHouseApplication {
 
                 if (randomizer >= 0 || randomizer <= 4){
                     newPsychic.setAge(55);
+                    newPsychic.setPsychicStrength(randomizer);
                     newPsychic.setPossessedAction("jumps onto the person next to them and begins to claw feverishly at their face");
                     newPsychic.setName("Barbara");
                 }
                 if (randomizer >= 5 || randomizer <= 7){
                     newPsychic.setAge(60);
+                    newPsychic.setPsychicStrength(randomizer);
                     newPsychic.setPossessedAction("ripping at her clothes and screaming an inhuman noise at a pitch that shatters glass");
                     newPsychic.setName("Jon");
                 }
                 if (randomizer >= 8 || randomizer <= 10){
                     newPsychic.setAge(48);
+                    newPsychic.setPsychicStrength(randomizer);
                     newPsychic.setPossessedAction("full consumed by the spirits. Eyes are rolled back into head and blood drips from their nose");
                     newPsychic.setName("Sylvia");
                 }
