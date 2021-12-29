@@ -11,14 +11,18 @@ import java.util.List;
 public class Priest extends Person {
 
     private int holiness = 3;
-    private List<Person> clients = new ArrayList<>();
+    private List<Resident> clients = new ArrayList<>();
     private String helpType = "priest";
+
+    public Priest() {
+
+    }
 
     public int getHoliness() {
         return holiness;
     }
 
-    public Priest(String name, int age, int skepticismLevel, int holiness, List<Person> clients) {
+    public Priest(String name, int age, int skepticismLevel, int holiness, List<Resident> clients) {
         super(name, age, skepticismLevel);
         this.holiness = holiness;
         this.clients = clients;
@@ -32,11 +36,11 @@ public class Priest extends Person {
         return helpType;
     }
 
-    public List<Person> getClients() {
+    public List<Resident> getClients() {
         return clients;
     }
 
-    public void setClients(List<Person> clients) {
+    public void setClients(List<Resident> clients) {
         this.clients = clients;
     }
 

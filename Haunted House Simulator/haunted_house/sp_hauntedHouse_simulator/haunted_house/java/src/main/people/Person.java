@@ -9,8 +9,11 @@ public abstract class Person {
     private int skepticismLevel;
 
     private boolean isPossessed = false;
-    private String possessedAction;
     // have this actually do something
+    private String possessedAction;
+    private String helpType;
+
+
 
 
     public String getName() {
@@ -47,6 +50,18 @@ public abstract class Person {
 
     public void setPossessedAction(String possessedAction) {
         this.possessedAction = possessedAction;
+    }
+
+    public String getPossessedAction() {
+        return possessedAction;
+    }
+
+    public String getGetHelpType() {
+        return helpType;
+    }
+
+    public void setGetHelpType(String getHelpType) {
+        this.helpType = getHelpType;
     }
 
     public Person(String name, int age, int skepticismLevel) {

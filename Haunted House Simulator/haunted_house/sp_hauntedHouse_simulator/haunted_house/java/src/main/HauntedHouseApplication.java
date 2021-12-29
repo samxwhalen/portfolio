@@ -106,6 +106,7 @@ public class HauntedHouseApplication {
                 spiritPeace = spirits.get(0).getPeacefulnessLevel() + spirits.get(1).getPeacefulnessLevel() - 4 ;
 
                 Psychic psychic = new Psychic(0);
+                Priest priest = new Priest();
 
                 System.out.println(ghost1.haunt());
 
@@ -134,48 +135,50 @@ public class HauntedHouseApplication {
                     }
 
                     if(selection == 1){
-                        psychic = (Psychic) help.get(0);
+                        if(help.get(0).getGetHelpType().equals("psychic")){
+                            psychic = (Psychic) help.get(0);
+                            establishPsychicConnection(currentResidents, psychic, contactMethods);
+                        } else if (help.get(0).getGetHelpType().equals("priest")){
+                            priest = (Priest) help.get(0);
+                            establishPriestConnection(currentResidents, priest, contactMethods);
+                        }
                     } else if (selection == 2) {
-                        psychic = (Psychic) help.get(1);
-                    }
-                    else if (selection == 3) {
-                        psychic = (Psychic) help.get(2);
-                    }
-
-                    System.out.printf("\nYou phone %s, a %s. \n", psychic.getName(), psychic.getHelpType());
-                    psychic.setClients(residents);
-
-                    //have psychic consult clients
-                    psychic.consultClients(residents);
-
-                    // contact dead method
-                    System.out.println("\nThe advice is severe. If there is going to be any peace in this house, drastic measures must be taken. \n");
-                    System.out.printf("%s advises that everyone try to contact the spirit by means of: \n", psychic.getName());
-                    for (ContactDeadApproach approach : approaches){
-                        System.out.print(approach.getApproachMethod() + "\n");   // this may be weird
-                    }
-
-                    for (Resident resident : currentResidents) {
-                        if (resident.getSkepticismLevel() <= 4){
-                            System.out.printf("%s is totally on board. Whatever %s says, they will do! \n", resident.getName(), psychic.getName());
-                        } if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
-                            System.out.printf("%s is hesitant but doesn't see the harm in trying a different approach. They think %s seems a little full of it but they want to keep an open mind \n", resident.getName(), psychic.getName());
-                        } if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
-                            System.out.printf("%s is totally opposed to the idea. They want to know why they should believe a word %s says! It smells like a scam to them \n", resident.getName(), psychic.getName());
+                        if(help.get(1).getGetHelpType().equals("psychic")){
+                            psychic = (Psychic) help.get(1);
+                            establishPsychicConnection(currentResidents, psychic, contactMethods);
+                        } else if (help.get(1).getGetHelpType().equals("priest")){
+                            priest = (Priest) help.get(1);
+                            establishPriestConnection(currentResidents, priest, contactMethods);
                         }
                     }
-
+                    else if (selection == 3) {
+                        if(help.get(2).getGetHelpType().equals("psychic")){
+                            psychic = (Psychic) help.get(2);
+                            establishPsychicConnection(currentResidents, psychic, contactMethods);
+                        } else if (help.get(2).getGetHelpType().equals("priest")){
+                            priest = (Priest) help.get(2);
+                            establishPriestConnection(currentResidents, priest, contactMethods);
+                        }
+                    }
                     //this breaks the loop / stops it from being repeated each time they interact with spirits
                     getHelp = true;
                 }
 
                 int strengthOfContact = 0;
 
+                //for psychic
                 if (psychic.getPsychicStrength() < 5){
                     strengthOfContact = psychic.getPsychicStrength() + 3;
 
                 } else {
                     strengthOfContact = psychic.getPsychicStrength();
+                }
+
+                //for priest
+                if (priest.getHoliness() < 5){
+                    strengthOfContact = priest.getHoliness() + 2;
+                } else {
+                    strengthOfContact = priest.getHoliness();
                 }
 
                 System.out.println("Let the contacting begin! \n ");
@@ -211,6 +214,55 @@ public class HauntedHouseApplication {
         //provide a loop with user input for a more intense haunting
         //absolute chaos mode
 
+    }
+
+    private static void establishPsychicConnection(List<Resident> clients, Psychic psychic, List<ContactDeadApproach> approaches){
+        System.out.printf("\nYou phone %s, a %s. \n", psychic.getName(), psychic.getHelpType());
+        psychic.setClients(clients);
+
+        //have psychic consult clients
+        psychic.consultClients(clients);
+
+        // contact dead method
+        System.out.println("\nThe advice is severe. If there is going to be any peace in this house, drastic measures must be taken. \n");
+        System.out.printf("%s advises that everyone try to contact the spirit by means of: \n", psychic.getName());
+
+        for (ContactDeadApproach approach : approaches){
+            System.out.print(approach.getApproachMethod() + "\n");   // this may be weird
+        }
+
+        for (Resident resident : clients) {
+            if (resident.getSkepticismLevel() <= 4){
+                System.out.printf("%s is totally on board. Whatever %s says, they will do! \n", resident.getName(), psychic.getName());
+            } if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
+                System.out.printf("%s is hesitant but doesn't see the harm in trying a different approach. They think %s seems a little full of it but they want to keep an open mind \n", resident.getName(), psychic.getName());
+            } if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
+                System.out.printf("%s is totally opposed to the idea. They want to know why they should believe a word %s says! It smells like a scam to them \n", resident.getName(), psychic.getName());
+            }
+        }
+    }
+
+    private static void establishPriestConnection(List<Resident> clients, Priest priest, List<ContactDeadApproach> approaches){
+        System.out.printf("\nYou phone %s, a %s. \n", priest.getName(), priest.getHelpType());
+        priest.setClients(clients);
+
+        // contact dead method
+        System.out.println("\nThe advice is severe. If there is going to be any peace in this house, drastic measures must be taken. \n");
+        System.out.printf("%s advises that everyone try to contact the spirit by means of: \n", priest.getName());
+
+        for (ContactDeadApproach approach : approaches){
+            System.out.print(approach.getApproachMethod() + "\n");   // this may be weird
+        }
+
+        for (Resident resident : clients) {
+            if (resident.getSkepticismLevel() <= 4){
+                System.out.printf("%s is totally on board. Whatever %s says, they will do! \n", resident.getName(), priest.getName());
+            } if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
+                System.out.printf("%s is hesitant but doesn't see the harm in trying a different approach. They think %s seems a little full of it but they want to keep an open mind \n", resident.getName(), priest.getName());
+            } if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
+                System.out.printf("%s is totally opposed to the idea. They want to know why they should believe a word %s says! It smells like a scam to them \n", resident.getName(), priest.getName());
+            }
+        }
     }
 
 
@@ -309,18 +361,21 @@ public class HauntedHouseApplication {
                     newPsychic.setPsychicStrength(randomizer);
                     newPsychic.setPossessedAction("jumps onto the person next to them and begins to claw feverishly at their face");
                     newPsychic.setName("Barbara");
+                    newPsychic.setGetHelpType("psychic");
                 }
                 if (randomizer >= 5 || randomizer <= 7){
                     newPsychic.setAge(60);
                     newPsychic.setPsychicStrength(randomizer);
                     newPsychic.setPossessedAction("ripping at her clothes and screaming an inhuman noise at a pitch that shatters glass");
                     newPsychic.setName("Jon");
+                    newPsychic.setGetHelpType("psychic");
                 }
                 if (randomizer >= 8 || randomizer <= 10){
                     newPsychic.setAge(48);
                     newPsychic.setPsychicStrength(randomizer);
                     newPsychic.setPossessedAction("full consumed by the spirits. Eyes are rolled back into head and blood drips from their nose");
                     newPsychic.setName("Sylvia");
+                    newPsychic.setGetHelpType("psychic");
                 }
 
 
@@ -336,16 +391,19 @@ public class HauntedHouseApplication {
                     priest.setAge(26);
                     priest.setPossessedAction("robes become engulfed in flames yet he is laughing and his flesh does not burn");
                     priest.setName("Father Kyle");
+                    priest.setGetHelpType("priest");
                 }
                 if (randomizer >= 5 || randomizer <= 7){
                     priest.setAge(49);
                     priest.setPossessedAction("tries to bite the flesh of the youngest person present");
                     priest.setName("Father James");
+                    priest.setGetHelpType("priest");
                 }
                 if (randomizer >= 8 || randomizer <= 10){
                     priest.setAge(63);
                     priest.setPossessedAction("grabs at the crucifix around his neck, speaking in reversed latin");
                     priest.setName("Father William");
+                    priest.setGetHelpType("priest");
                 }
 
                 helpers.add(priest);

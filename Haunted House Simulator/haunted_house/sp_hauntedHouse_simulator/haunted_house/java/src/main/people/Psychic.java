@@ -16,7 +16,6 @@ public class Psychic extends Person{
     public Psychic(Person person) {
     }
 
-
     public void setPsychicStrength(int psychicStrength) {
         this.psychicStrength = psychicStrength;
     }
