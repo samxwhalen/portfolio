@@ -55,6 +55,7 @@ if end_obs == "yes":
                 print("GOOD! I'll be here if you need another reason to not reach out to them. You got this!")
                 break
 
+
 if end_obs == "no":
     print("Okay then...")
 print("Come on back whenever you need help letting go!")
