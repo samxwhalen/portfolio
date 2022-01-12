@@ -30,7 +30,7 @@ public class HauntedHouseApplication {
         String prompt = "";
 
         // Create the residents:
-        List<Resident> currentResidents = null;
+        List<Resident> currentResidents = new ArrayList<>();
         try{
             prompt = "Anyway.. How many people live here with you?";
             currentResidents = moveIn(Integer.parseInt(getUserInput(prompt)));
@@ -108,22 +108,21 @@ public class HauntedHouseApplication {
                 Psychic psychic = new Psychic(0);
                 Priest priest = new Priest();
 
-                System.out.println(ghost1.haunt());
-
-                System.out.println("Weird stuff has been happening in the house. \n");
-
-                for (Resident resident : residents) {
-
-                    System.out.println( resident.scareReaction());
-
-                    System.out.println(ghost1.followFamiliarRoutine());
-                    resident.setSkepticismLevel(-1);
-
-                    System.out.println(ghost2.followFamiliarRoutine());
-                }
-
-                //this needs to be wrapped in a loop or tucked away in a method so that it doesn't keep triggering
                 while (getHelp == false){
+                    System.out.println("\n" + ghost1.haunt());
+
+                    System.out.println("Weird stuff has been happening in the house. \n");
+
+                    for (Resident resident : residents) {
+
+                        System.out.println( resident.scareReaction());
+
+                        System.out.println(ghost1.followFamiliarRoutine());
+                        resident.setSkepticismLevel(resident.getSkepticismLevel() - 1);
+
+                        System.out.println(ghost2.followFamiliarRoutine());
+                    }
+
                     System.out.println("It's decided that it is time to consult someone who could help.\n");
                     int potentialHelp = help.size();
 
@@ -134,34 +133,18 @@ public class HauntedHouseApplication {
                         selection = Integer.parseInt(getUserInput(prompt));
                     }
 
-                    if(selection == 1){
-                        if(help.get(0).getGetHelpType().equals("psychic")){
-                            psychic = (Psychic) help.get(0);
+                    for (int i = 0; i < selection; i++){
+                        if (help.get(i).getGetHelpType().equals("psychic")){
+                            psychic = (Psychic) help.get(i);
                             establishPsychicConnection(currentResidents, psychic, contactMethods);
-                        } else if (help.get(0).getGetHelpType().equals("priest")){
-                            priest = (Priest) help.get(0);
-                            establishPriestConnection(currentResidents, priest, contactMethods);
-                        }
-                    } else if (selection == 2) {
-                        if(help.get(1).getGetHelpType().equals("psychic")){
-                            psychic = (Psychic) help.get(1);
-                            establishPsychicConnection(currentResidents, psychic, contactMethods);
-                        } else if (help.get(1).getGetHelpType().equals("priest")){
-                            priest = (Priest) help.get(1);
+                        } else if (help.get(i).getGetHelpType().equals("priest")) {
+                            priest = (Priest) help.get(i);
                             establishPriestConnection(currentResidents, priest, contactMethods);
                         }
                     }
-                    else if (selection == 3) {
-                        if(help.get(2).getGetHelpType().equals("psychic")){
-                            psychic = (Psychic) help.get(2);
-                            establishPsychicConnection(currentResidents, psychic, contactMethods);
-                        } else if (help.get(2).getGetHelpType().equals("priest")){
-                            priest = (Priest) help.get(2);
-                            establishPriestConnection(currentResidents, priest, contactMethods);
-                        }
-                    }
-                    //this breaks the loop / stops it from being repeated each time they interact with spirits
+
                     getHelp = true;
+                    System.out.println("Let the contacting begin! \n ");
                 }
 
                 int strengthOfContact = 0;
@@ -181,7 +164,7 @@ public class HauntedHouseApplication {
                     strengthOfContact = priest.getHoliness();
                 }
 
-                System.out.println("Let the contacting begin! \n ");
+
                 for (ContactDeadApproach approach : approaches){
 
                     prompt = "What should their message to the spirit be? \n";
@@ -195,24 +178,21 @@ public class HauntedHouseApplication {
                     }
                 }
 
-                // copy and paste logic from above an tweak for these options - consider best way to layer spirits
+                // copy and paste logic from above and tweak for these options - consider best way to layer spirits
 
             }else if (choice.equalsIgnoreCase("scary")){
                 //terrorizingAction for poltergeist
+                //provide a loop with user input for a more intense haunting
 
             } else if (choice.equalsIgnoreCase("horrifying")){
                 //terrorizingAction for poltergeist
+                //absolute chaos mode
 
             }
         }
-        //the haunting loop:
-
-        //prints out the story -- use while loop to track spirit peacefulness level
 
 
-        //default interaction loop - basic haunting
-        //provide a loop with user input for a more intense haunting
-        //absolute chaos mode
+        //how are ghost peacefulness levels changing during all of this? Is the pacing too slow?
 
     }
 
@@ -234,32 +214,28 @@ public class HauntedHouseApplication {
         for (Resident resident : clients) {
             if (resident.getSkepticismLevel() <= 4){
                 System.out.printf("%s is totally on board. Whatever %s says, they will do! \n", resident.getName(), psychic.getName());
-            } if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
+            } else if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
                 System.out.printf("%s is hesitant but doesn't see the harm in trying a different approach. They think %s seems a little full of it but they want to keep an open mind \n", resident.getName(), psychic.getName());
-            } if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
+            } else if (resident.getSkepticismLevel() > 7 && resident.getSkepticismLevel() <= 10){
                 System.out.printf("%s is totally opposed to the idea. They want to know why they should believe a word %s says! It smells like a scam to them \n", resident.getName(), psychic.getName());
             }
         }
     }
 
     private static void establishPriestConnection(List<Resident> clients, Priest priest, List<ContactDeadApproach> approaches){
-        System.out.printf("\nYou phone %s, a %s. \n", priest.getName(), priest.getHelpType());
+        System.out.printf("\nYou phone %s, a %s.", priest.getName(), priest.getHelpType());
         priest.setClients(clients);
 
         // contact dead method
         System.out.println("\nThe advice is severe. If there is going to be any peace in this house, drastic measures must be taken. \n");
-        System.out.printf("%s advises that everyone try to contact the spirit by means of: \n", priest.getName());
-
-        for (ContactDeadApproach approach : approaches){
-            System.out.print(approach.getApproachMethod() + "\n");   // this may be weird
-        }
+        System.out.printf("%s advises that everyone try to contact the spirit by means of: exorcism\n", priest.getName());
 
         for (Resident resident : clients) {
             if (resident.getSkepticismLevel() <= 4){
                 System.out.printf("%s is totally on board. Whatever %s says, they will do! \n", resident.getName(), priest.getName());
-            } if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
+            } else if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
                 System.out.printf("%s is hesitant but doesn't see the harm in trying a different approach. They think %s seems a little full of it but they want to keep an open mind \n", resident.getName(), priest.getName());
-            } if (resident.getSkepticismLevel() > 4 && resident.getSkepticismLevel() <= 7){
+            } else if (resident.getSkepticismLevel() > 7 && resident.getSkepticismLevel() <= 10){
                 System.out.printf("%s is totally opposed to the idea. They want to know why they should believe a word %s says! It smells like a scam to them \n", resident.getName(), priest.getName());
             }
         }
@@ -277,7 +253,7 @@ public class HauntedHouseApplication {
             ghost.setHatredOfHumansLevel(2);
             ghost.setDefaultMessage("Will you play with me?");
             ghost.setUnfinishedBusiness("needs her bones to be found.");
-            ghost.setWish("want to play with other children.");
+            ghost.setWish("wants to play with other children.");
             ghost.setManyMessages(new ArrayList<>(Arrays.asList("My mommy loved me!", "I was a bad little girl", "Are you a ghost?", "Can we play a game?", "I'm scared...")));
 
 
@@ -377,8 +353,6 @@ public class HauntedHouseApplication {
                     newPsychic.setName("Sylvia");
                     newPsychic.setGetHelpType("psychic");
                 }
-
-
                 helpers.add(newPsychic);
             }
 
@@ -480,7 +454,7 @@ public class HauntedHouseApplication {
             if (choice.equals("1")){
                 ContactDeadApproach ouijaBoard = new ContactDeadApproach();
                 ouijaBoard.setApproachMethod("ouija");
-                ouijaBoard.setSpectacularAction("The planchette begins to wildly spell out something! No one is touching it! Quick, someone grab some record this!");
+                ouijaBoard.setSpectacularAction("The planchette begins to wildly spell out something! No one is touching it! Quick, someone record this!");
                 ouijaBoard.setMediocreAction("It feels like one of us is forcefully moving it.. stop moving it!");
                 contactMethods.add(ouijaBoard);
             }

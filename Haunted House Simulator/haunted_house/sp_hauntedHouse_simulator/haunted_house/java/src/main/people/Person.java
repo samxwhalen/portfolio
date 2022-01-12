@@ -11,7 +11,7 @@ public abstract class Person {
     private boolean isPossessed = false;
     // have this actually do something
     private String possessedAction;
-    private String helpType;
+    private String helpType = "Person";
 
 
 
