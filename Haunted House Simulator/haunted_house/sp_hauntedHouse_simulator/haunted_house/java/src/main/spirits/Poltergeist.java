@@ -1,6 +1,7 @@
 package main.spirits;
 
 import main.people.Person;
+import main.people.Resident;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +38,7 @@ public class Poltergeist extends Spirit {
         return currentPoltergeist;
     }
 
-    public void terrorize(List<Person> currentResidents){
+    public void terrorize(List<Resident> currentResidents){
         for(Person resident : currentResidents){
 
             int range = terrorizingActions.size();

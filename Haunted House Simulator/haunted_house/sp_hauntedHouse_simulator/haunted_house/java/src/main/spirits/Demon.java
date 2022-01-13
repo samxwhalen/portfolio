@@ -80,6 +80,7 @@ public class Demon extends Spirit {
     public Demon(int demonicPower) {
         this.demonicPower = demonicPower;
     }
+    public Demon (){};
 
     public String stealSoul(Person victim){
 

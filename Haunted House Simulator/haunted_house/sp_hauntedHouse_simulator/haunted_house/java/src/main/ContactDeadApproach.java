@@ -87,10 +87,8 @@ public class ContactDeadApproach {
         }
 
         int numberOfAttempts = 0;
-
-//        was wrapped in a while loop - trying it w/o
-            // have this be more specific? Something to consider..
-            if(contactStrength < 4){
+        
+            if(contactStrength < 4 && approachMethod.equalsIgnoreCase("ouija")){
                 System.out.println("The " + approachMethod + " reveals the message: " + genericMessages.get(randomizer));
                 numberOfAttempts++;
                 changeSkepticism(participants, 1);
@@ -102,7 +100,7 @@ public class ContactDeadApproach {
                 }
             }
 
-            if(contactStrength < 7 && contactStrength >= 5){
+            if(contactStrength <= 10 && contactStrength >= 5){
 
                 if(approachMethod.equalsIgnoreCase("ouija")){
                     System.out.println("\nThey begin to use the ouija board. " + getSpectacularAction());

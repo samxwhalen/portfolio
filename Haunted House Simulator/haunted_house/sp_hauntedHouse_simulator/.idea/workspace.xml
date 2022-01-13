@@ -5,11 +5,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/haunted_house/java/src/main/ContactDeadApproach.java" beforeDir="false" afterPath="$PROJECT_DIR$/haunted_house/java/src/main/ContactDeadApproach.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/haunted_house/java/src/main/HauntedHouseApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/haunted_house/java/src/main/HauntedHouseApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/haunted_house/java/src/main/people/Priest.java" beforeDir="false" afterPath="$PROJECT_DIR$/haunted_house/java/src/main/people/Priest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/haunted_house/java/src/main/spirits/Demon.java" beforeDir="false" afterPath="$PROJECT_DIR$/haunted_house/java/src/main/spirits/Demon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/haunted_house/java/src/main/spirits/Ghost.java" beforeDir="false" afterPath="$PROJECT_DIR$/haunted_house/java/src/main/spirits/Ghost.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/haunted_house/java/src/main/spirits/Poltergeist.java" beforeDir="false" afterPath="$PROJECT_DIR$/haunted_house/java/src/main/spirits/Poltergeist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/haunted_house/java/src/main/spirits/Spirit.java" beforeDir="false" afterPath="$PROJECT_DIR$/haunted_house/java/src/main/spirits/Spirit.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,8 +93,8 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/haunted_house/java/src/main/ContactDeadApproach.java</url>
-          <line>93</line>
-          <option name="timeStamp" value="3" />
+          <line>80</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

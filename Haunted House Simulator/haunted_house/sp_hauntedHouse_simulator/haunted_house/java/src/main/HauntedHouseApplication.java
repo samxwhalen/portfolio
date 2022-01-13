@@ -64,7 +64,7 @@ public class HauntedHouseApplication {
         // Start the story:
         System.out.println("\n The boxes are unpacked. The artwork has been hung. Everyone is moved in.");
         hauntedHouseOutcome(scariness, currentResidents, helpers, contactDead);
-        // change getuserprompt to scariness string
+
 
     }
 
@@ -83,6 +83,7 @@ public class HauntedHouseApplication {
         List<ContactDeadApproach> approaches = contactMethods;
         List<Resident> currentResidents = residents;
         List<Person> outsideHelp = help;
+        int strengthOfContact = 4;
 
 
         Map<String, String> specificMessages = new HashMap<>();
@@ -110,117 +111,130 @@ public class HauntedHouseApplication {
             method.setParticipants(allParticipants);
         }
 
+        //begin the story
+        System.out.println("Weird stuff has been happening in the house. \n");
+        int randomizer = (int)(Math.random() * 2);
+        System.out.println("\n" + spirits.get(randomizer).haunt());
 
         while(restInPeace == false){
 
+            spiritPeace = spirits.get(0).getPeacefulnessLevel() + spirits.get(1).getPeacefulnessLevel() - 4 ;
 
-            if(spirits.get(0).getSpiritType().equals("ghost")){
-                Ghost ghost1 = (Ghost) spirits.get(0);
-            } else if (spirits.get(0).getSpiritType().equals("poltergeist")){
-                Poltergeist poltergeist1 = (Poltergeist) spirits.get(0);
-            } else if (spirits.get(0).getSpiritType().equals("demon")){
-                Demon demon1 = (Demon) spirits.get(0);
-            }
+            Psychic psychic = new Psychic(0);
+            Priest priest = new Priest();
 
-            if(spirits.get(1).getSpiritType().equals("ghost")){
-                Ghost ghost2 = (Ghost) spirits.get(1);
-            } else if (spirits.get(0).getSpiritType().equals("poltergeist")){
-                Poltergeist poltergeist2 = (Poltergeist) spirits.get(1);
-            } else if (spirits.get(1).getSpiritType().equals("demon")){
-                Demon demon2 = (Demon) spirits.get(1);
-            }
+            // there has to be a better way but this is the best solution atm.
+            Ghost ghost1 = new Ghost();
+            Ghost ghost2 = new Ghost();
+            Poltergeist poltergeist1 = new Poltergeist();
+            Poltergeist poltergeist2 = new Poltergeist();
+            Demon demon1 = new Demon();
+            Demon demon2 = new Demon();
 
-                spiritPeace = spirits.get(0).getPeacefulnessLevel() + spirits.get(1).getPeacefulnessLevel() - 4 ;
+            if(spirits.get(0).getSpiritType().equals("ghost") && spirits.get(1).getSpiritType().equals("ghost")){
+                ghost1 = (Ghost) spirits.get(0);
+                ghost2 = (Ghost) spirits.get(1);
 
-                Psychic psychic = new Psychic(0);
-                Priest priest = new Priest();
+                //haunting actions
+                for (Resident resident : residents) {
 
-                while (getHelp == false){
+                    //ghost1
+                    System.out.println( resident.scareReaction());
+                    System.out.println(ghost1.followFamiliarRoutine());
+                    resident.setSkepticismLevel(resident.getSkepticismLevel() - 1);
 
-                    // need to adjust this so that it changes depending on the spirit type - needs to be more concise. 
-                    System.out.println("\n" + ghost1.haunt());
-
-                    System.out.println("Weird stuff has been happening in the house. \n");
+                    //ghost2
+                    System.out.println( resident.scareReaction());
+                    System.out.println(ghost2.followFamiliarRoutine());
+                    resident.setSkepticismLevel(resident.getSkepticismLevel() - 1);
+                }
+            } else if (spirits.get(0).getSpiritType().equals("poltergeist") || spirits.get(1).getSpiritType().equals("poltergeist")){
+                poltergeist1 = (Poltergeist) spirits.get(0);
+                poltergeist2 = (Poltergeist) spirits.get(1);
 
                     for (Resident resident : residents) {
-
+                        poltergeist1.terrorize(residents);
+                        poltergeist2.terrorize(residents);
                         System.out.println( resident.scareReaction());
+                        resident.setSkepticismLevel(resident.getSkepticismLevel() - 2);
+                   }
 
-                        System.out.println(ghost1.followFamiliarRoutine());
-                        resident.setSkepticismLevel(resident.getSkepticismLevel() - 1);
+            } else if (spirits.get(0).getSpiritType().equals("poltergeist") || spirits.get(1).getSpiritType().equals("demon")){
+                poltergeist1 = (Poltergeist) spirits.get(0);
+                demon1 = (Demon) spirits.get(1);
 
-                        System.out.println(ghost2.followFamiliarRoutine());
+                for (Resident resident : residents) {
+                    poltergeist1.terrorize(residents);
+                    System.out.println( resident.scareReaction());
+                    resident.setSkepticismLevel(resident.getSkepticismLevel() - 2);
+
+                    if (resident.getSkepticismLevel() <= 4){
+                        demon1.stealSoul(resident);
                     }
+                }
+            }
 
+            while (getHelp == false){
+                //phone for external help
+                // NOTE: Contact strength is wonky af
                     System.out.println("It's decided that it is time to consult someone who could help.\n");
                     int potentialHelp = help.size();
 
-                    // this whole part could be streamlined depending on the spirit types and the contact methods chosen - the only real limiting spirit
-                    //type is a demon. Other than that - it's pretty flexible.
+                    for (ContactDeadApproach approach: approaches){
+                        for (int i = 0; i < potentialHelp ; i++){
+                            if (approach.getApproachMethod().contains("seance") || approach.getApproachMethod().contains("paranormal technology")){
+                                if (help.get(i).getGetHelpType().equals("psychic")){
+                                    psychic = (Psychic) help.get(i);
+                                    establishPsychicConnection(currentResidents, psychic, contactMethods);
 
-                    prompt = "Pick a number between 1 - " + potentialHelp;
-                    Integer selection = Integer.parseInt(getUserInput(prompt));
-                    if (selection <= 0 && selection > potentialHelp){
-                        prompt = "Try Again.";
-                        selection = Integer.parseInt(getUserInput(prompt));
-                    }
+                                    if (psychic.getPsychicStrength() < 5){
+                                        strengthOfContact += psychic.getPsychicStrength() + 3;
 
-                    for (int i = 0; i < selection; i++){
-                        if (help.get(i).getGetHelpType().equals("psychic")){
-                            psychic = (Psychic) help.get(i);
-                            establishPsychicConnection(currentResidents, psychic, contactMethods);
-                        } else if (help.get(i).getGetHelpType().equals("priest")) {
-                            priest = (Priest) help.get(i);
-                            establishPriestConnection(currentResidents, priest, contactMethods);
+                                    } else {
+                                        strengthOfContact += psychic.getPsychicStrength();
+                                    }
+                                }
+                            } else if (approach.getApproachMethod().contains("exorcism") && (spirits.get(1).getSpiritType().equals("demon"))){
+                                if (help.get(i).getGetHelpType().equals("priest")){
+                                    priest = (Priest) help.get(i);
+                                    establishPriestConnection(currentResidents, priest, contactMethods);
+
+                                    if (priest.getHoliness() < 5){
+                                        strengthOfContact += priest.getHoliness() + 2;
+                                    } else {
+                                        strengthOfContact += priest.getHoliness();
+                                    }
+                                }
+                            }
                         }
                     }
-
                     getHelp = true;
                     System.out.println("Let the contacting begin! \n ");
+            }
+
+            for (ContactDeadApproach approach : approaches){
+                prompt = "What should their message to the spirit(s) be? \n";
+                String message = getUserInput(prompt);
+
+                strengthOfContact = strengthOfContact / 2;
+
+                approach.contactDead(strengthOfContact, message, spirits.get(0), allParticipants, approach.getApproachMethod());
+                spiritPeace = spiritPeace + spirits.get(0).getPeacefulnessLevel();
+
+                if (spiritPeace == 20){
+                    restInPeace = true;
                 }
 
-                int strengthOfContact = 0;
+                approach.contactDead(strengthOfContact, message, spirits.get(1), allParticipants, approach.getApproachMethod());
+                spiritPeace = spiritPeace + spirits.get(1).getPeacefulnessLevel();
 
-                //for psychic
-                if (psychic.getPsychicStrength() < 5){
-                    strengthOfContact = psychic.getPsychicStrength() + 3;
-
-                } else {
-                    strengthOfContact = psychic.getPsychicStrength();
+                if (spiritPeace == 20){
+                    restInPeace = true;
                 }
-
-                //for priest
-                if (priest.getHoliness() < 5){
-                    strengthOfContact = priest.getHoliness() + 2;
-                } else {
-                    strengthOfContact = priest.getHoliness();
-                }
-
-
-                for (ContactDeadApproach approach : approaches){
-
-                    prompt = "What should their message to the spirit(s) be? \n";
-                    String message = getUserInput(prompt);
-
-                    approach.contactDead(strengthOfContact, message, ghost1, allParticipants, approach.getApproachMethod());
-                    spiritPeace = ghost1.getPeacefulnessLevel();
-
-                    if (spiritPeace == 10){
-                        restInPeace = true;
-                    }
-
-                    approach.contactDead(strengthOfContact, message, ghost2, allParticipants, approach.getApproachMethod());
-                    spiritPeace = ghost1.getPeacefulnessLevel();
-
-                    if (spiritPeace == 10){
-                        restInPeace = true;
-                    }
-
-                }
+            }
         }
 
-        //how are ghost peacefulness levels changing during all of this? Is the pacing too slow?
-
+        System.out.println("\n current ghost peacefulness levels: " + spiritPeace);
     }
 
     private static void establishPsychicConnection(List<Resident> clients, Psychic psychic, List<ContactDeadApproach> approaches){
@@ -578,6 +592,6 @@ public class HauntedHouseApplication {
 
 
             System.out.println();
-            System.out.println(" IT's PRETTY OLD AND CREEPY. ");
+            System.out.println(" IT'S PRETTY OLD AND CREEPY. ");
     }
 }
