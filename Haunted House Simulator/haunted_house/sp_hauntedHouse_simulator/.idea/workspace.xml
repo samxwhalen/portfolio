@@ -6,6 +6,7 @@
       <change beforePath="$PROJECT_DIR$/haunted_house/java/src/main/ContactDeadApproach.java" beforeDir="false" afterPath="$PROJECT_DIR$/haunted_house/java/src/main/ContactDeadApproach.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/haunted_house/java/src/main/HauntedHouseApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/haunted_house/java/src/main/HauntedHouseApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/haunted_house/java/src/main/people/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/haunted_house/java/src/main/people/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/haunted_house/java/src/main/people/Priest.java" beforeDir="false" afterPath="$PROJECT_DIR$/haunted_house/java/src/main/people/Priest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

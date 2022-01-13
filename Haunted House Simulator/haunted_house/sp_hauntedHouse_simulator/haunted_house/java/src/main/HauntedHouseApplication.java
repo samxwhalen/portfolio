@@ -167,7 +167,7 @@ public class HauntedHouseApplication {
 
                 for (ContactDeadApproach approach : approaches){
 
-                    prompt = "What should their message to the spirit be? \n";
+                    prompt = "What should their message to the spirit(s) be? \n";
                     String message = getUserInput(prompt);
 
                     approach.contactDead(strengthOfContact, message, ghost1, allParticipants, approach.getApproachMethod());
@@ -176,6 +176,14 @@ public class HauntedHouseApplication {
                     if (spiritPeace == 10){
                         restInPeace = true;
                     }
+
+                    approach.contactDead(strengthOfContact, message, ghost2, allParticipants, approach.getApproachMethod());
+                    spiritPeace = ghost1.getPeacefulnessLevel();
+
+                    if (spiritPeace == 10){
+                        restInPeace = true;
+                    }
+
                 }
 
                 // copy and paste logic from above and tweak for these options - consider best way to layer spirits
@@ -190,10 +198,7 @@ public class HauntedHouseApplication {
 
             }
         }
-
-
         //how are ghost peacefulness levels changing during all of this? Is the pacing too slow?
-
     }
 
     private static void establishPsychicConnection(List<Resident> clients, Psychic psychic, List<ContactDeadApproach> approaches){
@@ -554,7 +559,4 @@ public class HauntedHouseApplication {
             System.out.println();
             System.out.println(" IT's PRETTY OLD AND CREEPY. ");
     }
-
-
-
 }

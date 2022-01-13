@@ -89,7 +89,7 @@ public class ContactDeadApproach {
 //        was wrapped in a while loop - trying it w/o
             // have this be more specific? Something to consider..
             if(contactStrength < 4){
-                System.out.println(genericMessages.get(randomizer));
+                System.out.println("The " + approachMethod + " reveals the message: " + genericMessages.get(randomizer));
                 numberOfAttempts++;
                 changeSkepticism(participants, 1);
 
@@ -103,9 +103,9 @@ public class ContactDeadApproach {
             if(contactStrength < 7 && contactStrength >= 5){
 
                 if(approachMethod.equalsIgnoreCase("ouija")){
-                    System.out.println("They begin to use the ouija board. " + getSpectacularAction());
+                    System.out.println("\nThey begin to use the ouija board. " + getSpectacularAction());
 
-                    System.out.println("\nWOW!!!! Everyone in the room is stunned. Suddenly the ouija board spells out:");
+                    System.out.println("WOW!!!! Everyone in the room is stunned. Suddenly the ouija board spells out:");
                     System.out.println(spiritToReach.getName() + " " + spiritToReach.leaveClues(sendMessage));
                     numberOfAttempts++;
                     changeSkepticism(participants, 3);
@@ -117,12 +117,17 @@ public class ContactDeadApproach {
                     numberOfAttempts++;
                     changeSkepticism(participants, 8);
 
+                    //use psychic talk to spirit method here and see what happens
+
                 } else if (approachMethod.equalsIgnoreCase("Exorcism")){
+                    // first try priest praying for sins and then proceed with exorcism
 
                     System.out.println("Crucifixes are hung, the holy water is out. They begin the exorcism. \nWOW!!!! Everyone in the room is stunned. Suddenly the person being exorcised shouts in a low, inhuman voice:");
                     System.out.println(spiritToReach.getName() + " " + spiritToReach.leaveClues(sendMessage));
                     numberOfAttempts++;
                     changeSkepticism(participants, 6);
+
+
 
                 } else if (approachMethod.contains("paranormal technology") || approachMethod.contains("video")){
 

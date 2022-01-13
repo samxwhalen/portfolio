@@ -9,11 +9,8 @@ public abstract class Person {
     private int skepticismLevel;
 
     private boolean isPossessed = false;
-    // have this actually do something
     private String possessedAction;
     private String helpType = "Person";
-
-
 
 
     public String getName() {

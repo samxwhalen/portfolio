@@ -113,8 +113,6 @@ public class Priest extends Person {
 
             }
         }
-
-
     }
 
     public void prayForSins(Spirit ghost, List<Person> people){
@@ -125,9 +123,6 @@ public class Priest extends Person {
         }
 
         ghost.setPeacefulnessLevel(+1);
-
     }
-
-
 
 }
