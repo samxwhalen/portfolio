@@ -7,7 +7,7 @@ import java.util.List;
 public class Ghost extends Spirit {
 
 
-
+    private String spiritType = "ghost";
     private List<String> oldHabits = new ArrayList<>(Arrays.asList("You hear rummaging through the closet",
             "A cabinet slams in the other room", "Papers are is disarray on the desk",
             "Where did this old photo come from?", "It smells like someone is frying some onions..."));
@@ -15,6 +15,13 @@ public class Ghost extends Spirit {
     public Ghost(Spirit spirit) {
     }
 
+    public String getSpiritType() {
+        return spiritType;
+    }
+
+    public List<String> getOldHabits() {
+        return oldHabits;
+    }
 
     public void setOldHabits(List<String> oldHabits) {
         this.oldHabits = oldHabits;

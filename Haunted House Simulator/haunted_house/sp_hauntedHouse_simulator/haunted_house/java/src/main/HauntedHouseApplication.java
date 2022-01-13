@@ -47,10 +47,24 @@ public class HauntedHouseApplication {
 
         // Set the stage:
         System.out.println("");
-        prompt = "How scary do you want the haunted house to be? CREEPY / SCARY / HORRIFYING"; // 3 paths depending on the number
+
+        // use this for a randomize scary experience once I flesh out those options
+        int range = 9;
+        int randomizer = (int)(Math.random() * range);
+        String scariness = " ";
+
+        if (randomizer >= 0 && randomizer <= 3){
+            scariness = "creepy";
+        } else if (randomizer >= 4 && randomizer <= 6) {
+            scariness = "scary";
+        } else if (randomizer >= 7 && randomizer <= 9){
+            scariness = "horrifying";
+        }
 
         // Start the story:
-        hauntedHouseOutcome(getUserInput(prompt), currentResidents, helpers, contactDead);
+        System.out.println("\n The boxes are unpacked. The artwork has been hung. Everyone is moved in.");
+        hauntedHouseOutcome(scariness, currentResidents, helpers, contactDead);
+        // change getuserprompt to scariness string
 
     }
 
@@ -59,7 +73,7 @@ public class HauntedHouseApplication {
         return new Scanner(System.in).nextLine();
     }
 
-    private void hauntedHouseOutcome(String choice, List<Resident> residents, List<Person> help, List<ContactDeadApproach> contactMethods){
+    private void hauntedHouseOutcome(String scariness, List<Resident> residents, List<Person> help, List<ContactDeadApproach> contactMethods){
 
         boolean restInPeace = false;
         boolean getHelp = false;
@@ -82,8 +96,9 @@ public class HauntedHouseApplication {
             allParticipants.add(helper);
         }
 
-        // Create the spirits:
-        List<Spirit> spirits = generateSpirits(choice);
+        // Create the spirits: this could be set by me to minimize user typing
+        // nest this inside of the different kinds of stories
+        List<Spirit> spirits = generateSpirits(scariness);
 
         for (Spirit spirit : spirits){
             specificMessages.put(spirit.getName(), spirit.getDefaultMessage());
@@ -95,13 +110,25 @@ public class HauntedHouseApplication {
             method.setParticipants(allParticipants);
         }
 
+
         while(restInPeace == false){
 
 
-            if (choice.equalsIgnoreCase("creepy")){
-
+            if(spirits.get(0).getSpiritType().equals("ghost")){
                 Ghost ghost1 = (Ghost) spirits.get(0);
+            } else if (spirits.get(0).getSpiritType().equals("poltergeist")){
+                Poltergeist poltergeist1 = (Poltergeist) spirits.get(0);
+            } else if (spirits.get(0).getSpiritType().equals("demon")){
+                Demon demon1 = (Demon) spirits.get(0);
+            }
+
+            if(spirits.get(1).getSpiritType().equals("ghost")){
                 Ghost ghost2 = (Ghost) spirits.get(1);
+            } else if (spirits.get(0).getSpiritType().equals("poltergeist")){
+                Poltergeist poltergeist2 = (Poltergeist) spirits.get(1);
+            } else if (spirits.get(1).getSpiritType().equals("demon")){
+                Demon demon2 = (Demon) spirits.get(1);
+            }
 
                 spiritPeace = spirits.get(0).getPeacefulnessLevel() + spirits.get(1).getPeacefulnessLevel() - 4 ;
 
@@ -109,6 +136,8 @@ public class HauntedHouseApplication {
                 Priest priest = new Priest();
 
                 while (getHelp == false){
+
+                    // need to adjust this so that it changes depending on the spirit type - needs to be more concise. 
                     System.out.println("\n" + ghost1.haunt());
 
                     System.out.println("Weird stuff has been happening in the house. \n");
@@ -125,6 +154,9 @@ public class HauntedHouseApplication {
 
                     System.out.println("It's decided that it is time to consult someone who could help.\n");
                     int potentialHelp = help.size();
+
+                    // this whole part could be streamlined depending on the spirit types and the contact methods chosen - the only real limiting spirit
+                    //type is a demon. Other than that - it's pretty flexible.
 
                     prompt = "Pick a number between 1 - " + potentialHelp;
                     Integer selection = Integer.parseInt(getUserInput(prompt));
@@ -185,20 +217,10 @@ public class HauntedHouseApplication {
                     }
 
                 }
-
-                // copy and paste logic from above and tweak for these options - consider best way to layer spirits
-
-            }else if (choice.equalsIgnoreCase("scary")){
-                //terrorizingAction for poltergeist
-                //provide a loop with user input for a more intense haunting
-
-            } else if (choice.equalsIgnoreCase("horrifying")){
-                //terrorizingAction for poltergeist
-                //absolute chaos mode
-
-            }
         }
+
         //how are ghost peacefulness levels changing during all of this? Is the pacing too slow?
+
     }
 
     private static void establishPsychicConnection(List<Resident> clients, Psychic psychic, List<ContactDeadApproach> approaches){
@@ -247,10 +269,10 @@ public class HauntedHouseApplication {
     }
 
 
-    private List<Spirit> generateSpirits(String choice){
+    private List<Spirit> generateSpirits(String scariness){
         List<Spirit> spirits = new ArrayList<>();
 
-        if (choice.equalsIgnoreCase("creepy")){
+        if (scariness.equalsIgnoreCase("creepy")){
 
             Ghost ghost = new Ghost("Elizabeth", 10, "Strangled by unknown person", true);
             ghost.setOldHabits(new ArrayList<>( Arrays.asList ("a toy is seen moving in the middle of the room", "someone is giggling in the bathroom", "scratches of ink are found on an empty journal page", "nobody remembers putting these flowers on the table")));
@@ -276,9 +298,8 @@ public class HauntedHouseApplication {
 
             spirits.add(anotherGhost);
 
-            
 
-        } else if (choice.equalsIgnoreCase("scary")){
+        } else if (scariness.equalsIgnoreCase("scary")){
 
             Poltergeist poltergeist1 = new Poltergeist("Mary", 88, "unknown", true);
             poltergeist1.setPeacefulnessLevel(1);
@@ -301,7 +322,7 @@ public class HauntedHouseApplication {
 
             spirits.add(poltergeist2);
 
-        } else if (choice.equalsIgnoreCase("horrifying")){
+        } else if (scariness.equalsIgnoreCase("horrifying")){
 
             Poltergeist poltergeist = new Poltergeist("Tina Resch", 26, "starvation", true); // fill out
             poltergeist.setPeacefulnessLevel(1);

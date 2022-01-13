@@ -21,6 +21,7 @@ public abstract class Spirit {
     private String unfinishedBusiness;
     private String wish;
     private String physicalForm;
+    private String spiritType;
 
 
     public String getName() {
@@ -120,6 +121,14 @@ public abstract class Spirit {
 
     public void setPhysicalForm(String physicalForm) {
         this.physicalForm = physicalForm;
+    }
+
+    public String getSpiritType() {
+        return spiritType;
+    }
+
+    public void setSpiritType(String spiritType) {
+        this.spiritType = spiritType;
     }
 
     public Spirit(String name, int ageAtDeath, String causeOfDeath, boolean bodyOnPremise) {

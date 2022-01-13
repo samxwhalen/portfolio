@@ -71,7 +71,6 @@ public class Priest extends Person {
                     System.out.println(channelingSpirit.stealSoul(clients.get(i)));
                 }
             }
-
         } else if (getHoliness() >=4 && getHoliness() <= 7){
             approachMethod.changeSkepticism(clients, 5);
 
@@ -86,10 +85,7 @@ public class Priest extends Person {
                     System.out.println(clients.get(i).getName() + " is now ");
                     System.out.print(clients.get(i).possessedAction(true));
                 }
-
             }
-
-
         } else if (getHoliness() > 7 && getHoliness() <= 10){
             approachMethod.changeSkepticism(clients, 8);
             if(channelingSpirit.getDemonicPower() <= 6){

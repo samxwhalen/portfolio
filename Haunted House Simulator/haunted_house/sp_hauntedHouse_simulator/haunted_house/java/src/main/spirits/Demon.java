@@ -12,6 +12,12 @@ public class Demon extends Spirit {
     private String soulCaptureResponse;
     private String summoningResponse;
     private boolean isSummoned = false;
+    private String spiritType = "Demon";
+
+
+    public String getSpiritType() {
+        return spiritType;
+    }
 
     public int getDemonicPower() {
         return demonicPower;

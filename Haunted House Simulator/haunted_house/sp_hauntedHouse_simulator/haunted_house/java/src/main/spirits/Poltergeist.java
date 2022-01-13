@@ -9,6 +9,7 @@ import java.util.Objects;
 
 public class Poltergeist extends Spirit {
 
+    private String spiritType = "poltergeist";
     private List<String> terrorizingActions = new ArrayList<>(Arrays.asList("CRASSHHHHH!!!! All of the dishes in the cabinets have flown out and are shattered on the floor!",
             "A red slap mark appears on someone's face when they wake up in the morning.", "Everyone in the house has bite marks that appear on their ankle...",
             "A hot mug of coffee levitates from the table and is thrown at the wall.", "ALL OF THE FURNITURE IS BLOCKING THE DOOR OUT OF THE HOUSE!!!", "The tv keep turning on when nobody is in the room. It always is on a static screen."));
@@ -22,6 +23,13 @@ public class Poltergeist extends Spirit {
     public Poltergeist() {
     }
 
+    public String getSpiritType() {
+        return spiritType;
+    }
+
+    public List<String> getTerrorizingActions() {
+        return terrorizingActions;
+    }
 
     // this method may get weird - layering classes may not work in this way
     public Poltergeist speakWithHuman(Poltergeist currentPoltergeist){

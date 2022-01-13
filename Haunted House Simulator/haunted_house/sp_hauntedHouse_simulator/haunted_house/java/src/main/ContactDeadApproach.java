@@ -1,6 +1,8 @@
 package main;
 
 import main.people.Person;
+import main.people.Priest;
+import main.people.Psychic;
 import main.spirits.Demon;
 import main.spirits.Poltergeist;
 import main.spirits.Spirit;
@@ -106,18 +108,37 @@ public class ContactDeadApproach {
                     System.out.println("\nThey begin to use the ouija board. " + getSpectacularAction());
 
                     System.out.println("WOW!!!! Everyone in the room is stunned. Suddenly the ouija board spells out:");
-                    System.out.println(spiritToReach.getName() + " " + spiritToReach.leaveClues(sendMessage));
+
+                    if(spiritToReach.leaveClues(sendMessage).contains("I ")){
+                        System.out.println(spiritToReach.leaveClues(sendMessage));
+                    }else {
+                        System.out.println(spiritToReach.getName() + " " + spiritToReach.leaveClues(sendMessage));
+                    }
+
                     numberOfAttempts++;
                     changeSkepticism(participants, 3);
 
                 } else if (approachMethod.equalsIgnoreCase("seance")){
 
                     System.out.println("Candles are lit, the table is set. They begin the seance. \nWOW!!!! Everyone in the room is stunned. Suddenly everyone hears: ");
-                    System.out.println(spiritToReach.getName() + " " + spiritToReach.leaveClues(sendMessage));
+
+                    if(spiritToReach.leaveClues(sendMessage).contains("I ")){
+                        System.out.println(spiritToReach.leaveClues(sendMessage));
+                    }else {
+                        System.out.println(spiritToReach.getName() + " " + spiritToReach.leaveClues(sendMessage));
+                    }
+
+                    for (Person participant : participants){
+                        if (participant.getGetHelpType().equals("psychic")){
+                            Psychic psychic = new Psychic(participant);
+                            psychic.talkToSpirits("seance", spiritToReach, participants, sendMessage);
+                        }
+                    }
+
+
                     numberOfAttempts++;
                     changeSkepticism(participants, 8);
 
-                    //use psychic talk to spirit method here and see what happens
 
                 } else if (approachMethod.equalsIgnoreCase("Exorcism")){
                     // first try priest praying for sins and then proceed with exorcism
@@ -127,8 +148,15 @@ public class ContactDeadApproach {
                     numberOfAttempts++;
                     changeSkepticism(participants, 6);
 
-
-
+                    for (Person participant : participants){
+                        if (participant.getGetHelpType().equals("priest")  && spiritToReach.getSpiritType().equals("demon")) {
+                            Priest priest = new Priest();
+                            priest = (Priest) participant;
+                            priest.releasesDemon((Demon) spiritToReach, participants, sendMessage);
+                        } else {
+                            System.out.println("It appears this spirit is not a demon.. perhaps an exorcism is not needed afterall.");
+                        }
+                    }
                 } else if (approachMethod.contains("paranormal technology") || approachMethod.contains("video")){
 
                     System.out.println("The cameras have been recording for 24 hours. The footage is reviewed. \nWOW!!!! Everyone in the room is stunned. Suddenly the video footage shows a shadowy figure and then cuts to a scene of: "); //this needs to be tweaked since it wouldn't be a message
@@ -136,6 +164,14 @@ public class ContactDeadApproach {
                     sendMessage = "VIDEO";
 
                     System.out.println(spiritToReach.leaveClues(sendMessage));
+
+                    for (Person participant : participants){
+                        if (participant.getGetHelpType().equals("psychic")){
+                            Psychic psychic = new Psychic(participant);
+                            psychic.talkToSpirits("paranormal technology", spiritToReach, participants, sendMessage);
+                        }
+                    }
+
                     numberOfAttempts++;
                     changeSkepticism(participants, 5);
 
@@ -160,6 +196,14 @@ public class ContactDeadApproach {
 
             if (sendMessage.contains("devil") || sendMessage.contains("hell") || sendMessage.contains("satan") ||  sendMessage.contains("Satan") || sendMessage.contains("summon")){
                 openDoorsToHell();
+                for (Person participant : participants){
+                    if (participant.getGetHelpType().equals("priest") && spiritToReach.getSpiritType().equals("demon")){
+                        Priest priest = new Priest();
+                        priest = (Priest) participant;
+                        priest.releasesDemon((Demon)spiritToReach, participants, sendMessage);
+                    }
+                }
+
             }
     }
 
